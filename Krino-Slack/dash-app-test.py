@@ -8,6 +8,11 @@ from graphs_slack import *
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.SLATE])
 
+# Funciones DataTable
+
+PAGE_SIZE = 5
+
+
 app.layout = html.Div([
     dbc.Card(
         dbc.CardBody([
@@ -145,13 +150,15 @@ app.layout = html.Div([
                                     html.H2('Tickets sin asignar')
                                 ]),
                                 html.Br(),
-                               dash_table.DataTable(
+                                dash_table.DataTable(
                                     id="table",
                                     columns=[{"name": i, "id": i} for i in data_table_dash_app.iloc[:, lambda data_table_dash_app: [0,1,2,3,13]]],
                                     data=data_table_dash_app.to_dict("records"),
+                                    style_cell={'textAlign': 'center'},
                                     style_header={
                                         'backgroundColor': 'rgb(30, 30, 30)',
-                                        'color': 'white'
+                                        'color': 'white',
+                                        'height': 'auto'
                                     },
                                     style_data={
                                         'backgroundColor': 'rgb(50, 50, 50)',
@@ -159,6 +166,46 @@ app.layout = html.Div([
                                         'whiteSpace': 'normal',
                                         'height': 'auto'
                                     },
+                                )  
+                            ])
+                        ),  
+                    ])
+                ], width=12),
+            ], align='center'),
+            html.Br(),
+            dbc.Row([
+                dbc.Col([
+                    html.Div([
+                        dbc.Card(
+                            dbc.CardBody([
+                                html.Div([
+                                    html.H2('Tickets sin asignar')
+                                ]),
+                                html.Br(),
+                                dash_table.DataTable(
+                                    id="table2",
+                                    columns=[{"name": i, "id": i} for i in df],
+                                    data=df.to_dict("records"),
+                                    sort_action= 'native',
+                                    style_cell={'textAlign': 'center'},
+                                    style_header={
+                                        'backgroundColor': 'rgb(30, 30, 30)',
+                                        'color': 'white',
+                                        'height': 'auto'
+                                    },
+                                    style_data={
+                                        'backgroundColor': 'rgb(50, 50, 50)',
+                                        'color': 'white',
+                                        'whiteSpace': 'normal',
+                                        'height': 'auto'
+                                    },
+                                    style_table={'overflowX': 'scroll'},
+                                    filter_action= 'native',
+                                    style_filter={
+                                        'backgroundColor': 'rgb(30, 30, 30)',
+                                        'color': 'white',
+                                        'height': 'auto'
+                                    }
                                 )  
                             ])
                         ),  

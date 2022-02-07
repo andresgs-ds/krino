@@ -121,7 +121,7 @@ df_users = df_users.rename(columns = {'id': 'ticket_owner'}, inplace=False)
 
 data_clean1 = pd.merge(df_users, df_owner_transitoria, on='ticket_owner', how='outer')
 
-data_clean1 = data_clean1[data_clean1['name'].notna()]
+data_clean1 = data_clean1[(data_clean1['ticket_ops'].notna()) & (data_clean1['ticket_tech'].notna())]
 data_clean1 = data_clean1[data_clean1['latest_reply'] != ''].sort_values(['ts']).reset_index(drop=True)
 #--------------------------------------
 
@@ -142,6 +142,7 @@ data_clean1[['ts', 'thread_ts', 'latest_reply']] = data_clean1[['ts', 'thread_ts
 
 # Agregar nueva columna para encontrar el tiempo que estuvo abierto cada ticket.
 data_clean1['Duracion_Ticket_horas'] = (data_clean1.latest_reply - data_clean1.ts) / pd.Timedelta(hours=1)
+data_clean1['Duracion_Ticket_horas'] = data_clean1['Duracion_Ticket_horas'].apply(lambda x:round(x,2))
 
 # Ordenar las columnas
 data_clean1 = data_clean1[['user_ticket','name','text','ts','thread_ts','latest_reply','t_revisado','t_resuelto','t_finalizado','nuevo_req','ticket_ops','ticket_tech','urgente','Duracion_Ticket_horas']]
